@@ -1,6 +1,8 @@
 package com.sukminkang.bookfinder.network
 
+import com.sukminkang.bookfinder.BuildConfig
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
 class HttpClient {
@@ -16,10 +18,12 @@ class HttpClient {
                 .connectTimeout(HTTP_CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(HTTP_WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(HTTP_READ_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor { chain ->
-                    val builder = chain.request().newBuilder()
-                    chain.proceed(builder.build())
-                }
+
+            if (BuildConfig.DEBUG) {
+                var loggingInterceptor = HttpLoggingInterceptor()
+                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+                httpClientBuilder.addInterceptor(loggingInterceptor)
+            }
 
             return httpClientBuilder.build()
         }
