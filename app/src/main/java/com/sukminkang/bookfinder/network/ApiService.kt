@@ -5,7 +5,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiService {
-    private val BASE_URL = "https://api.itbook.store/1.0"
+    private const val BASE_URL = "https://api.itbook.store/1.0/"
 
     private val retrofitService: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -14,5 +14,8 @@ object ApiService {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
+    val searchApi: SearchApiInterface by lazy {
+        retrofitService.create(SearchApiInterface::class.java)
+    }
 
 }

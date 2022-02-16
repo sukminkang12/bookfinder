@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SearchResponseModel(
+    var error:Int,
     var total:Int,
     var page:Int,
     var books:ArrayList<SearchBooksModel>
