@@ -1,5 +1,6 @@
-package com.sukminkang.bookfinder.data.model
+package com.sukminkang.bookfinder.data
 
+import com.sukminkang.bookfinder.data.model.SearchResponseModel
 import com.sukminkang.bookfinder.network.ApiService
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

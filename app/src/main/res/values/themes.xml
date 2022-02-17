@@ -2,21 +2,20 @@
     <!-- Base application theme. -->
     <style name="Theme.Bookfinder" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/purple_700</item>
         <item name="colorAccent">@color/teal_200</item>
-        <!-- Customize your theme here. -->
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.MaterialComponents.Light">
+    <style name="SplashTheme" parent="Theme.Bookfinder">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
-    <style name="AppTheme" parent="SplashTheme">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowDisablePreview">true</item>
-    </style>
-
 
 </resources>
