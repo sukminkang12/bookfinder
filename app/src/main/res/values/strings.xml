@@ -3,5 +3,5 @@
 
     <string name="search_screen_title">Search</string>
     <string name="search_screen_total">total</string>
-    <string name="search_screen_isbn">ISBN</string>
+    <string name="search_screen_isbn">ISBN:%s</string>
 </resources>

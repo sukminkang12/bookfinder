@@ -3,26 +3,34 @@ package com.sukminkang.bookfinder.ui.component.search
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.sukminkang.bookfinder.R
 import com.sukminkang.bookfinder.data.model.SearchBooksModel
 import com.sukminkang.bookfinder.databinding.CellSearchBookBinding
-import com.sukminkang.bookfinder.ui.base.BaseViewHolder
 import com.sukminkang.bookfinder.ui.base.loadFromUrlString
 
-class SearchListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
+class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.ItemViewHolder>() {
 
     private lateinit var context: Context
     private val bookList : ArrayList<SearchBooksModel> = arrayListOf()
     private var isRequestNextPage = false
     var requestNextPageCallback: (() -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(CellSearchBookBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        holder.bind(position)
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val itemData = bookList[position]
+        holder.apply {
+            bind(itemData)
+        }
+
+        if (position == bookList.size - 1 && !isRequestNextPage) {
+            isRequestNextPage = true
+            requestNextPageCallback?.invoke()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -49,29 +57,11 @@ class SearchListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         notifyItemRangeInserted(start, bookList.lastIndex)
     }
 
-    inner class ItemViewHolder(
-        var binding:CellSearchBookBinding
-    ) : BaseViewHolder(binding.root) {
+    inner class ItemViewHolder(private val binding: CellSearchBookBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        override fun bind(position: Int) {
-            val itemData = bookList[position]
-
-            val title = itemData.title
-            val subtitle = if(itemData.subtitle.isNotBlank()) {
-                "(${itemData.subtitle})"
-            } else {
-                ""
-            }
-
-            binding.image.loadFromUrlString(itemData.image)
-            binding.title.text = title + subtitle
-            binding.isbn.text = "${context.getString(R.string.search_screen_isbn)} : ${itemData.isbn13}"
-            binding.price.text = itemData.price
-
-            if (position == bookList.size - 1 && !isRequestNextPage) {
-                isRequestNextPage = true
-                requestNextPageCallback?.invoke()
-            }
+        fun bind(recyclerViewItem: SearchBooksModel) = with(binding) {
+            bookItem = recyclerViewItem
         }
 
     }

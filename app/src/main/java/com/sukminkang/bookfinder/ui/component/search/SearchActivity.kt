@@ -1,11 +1,14 @@
 package com.sukminkang.bookfinder.ui.component.search
 
 import android.view.inputmethod.EditorInfo
+import android.widget.ImageView
 import androidx.activity.viewModels
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sukminkang.bookfinder.R
 import com.sukminkang.bookfinder.databinding.ActivitySearchBinding
 import com.sukminkang.bookfinder.ui.base.BaseActivity
+import com.sukminkang.bookfinder.ui.base.loadFromUrlString
 
 class SearchActivity : BaseActivity() {
 
