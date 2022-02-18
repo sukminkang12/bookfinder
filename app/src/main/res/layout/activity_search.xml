@@ -37,6 +37,7 @@
         </View>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:clickable="true"
             android:id="@+id/search_cl"
             android:background="@drawable/ic_rect8_stroke2_black"
             android:layout_marginTop="30dp"
@@ -45,15 +46,45 @@
             android:layout_width="match_parent"
             android:layout_height="54dp">
 
-            <EditText
+            <ImageView
+                android:id="@+id/find_icon"
+                android:src="@drawable/ic_find"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="15dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp">
+
+            </ImageView>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toStartOf="@id/delete_btn"
+                app:layout_constraintStart_toEndOf="@id/find_icon"
                 android:id="@+id/search_edit_text"
+                android:hint="@string/search_screen_hint"
                 android:inputType="text"
                 android:background="@null"
                 android:maxLines="1"
                 android:imeOptions="actionSearch"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent">
-            </EditText>
+            </androidx.appcompat.widget.AppCompatEditText>
+
+            <Button
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_input_delete"
+                android:id="@+id/delete_btn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{() -> vm.onDeleteBtnClick()}">
+
+            </Button>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -71,11 +102,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/total_text"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
+            app:layout_constraintVertical_bias="1.0"
+            tools:layout_editor_absoluteX="-16dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 

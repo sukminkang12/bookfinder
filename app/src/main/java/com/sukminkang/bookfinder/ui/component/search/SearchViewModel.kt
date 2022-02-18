@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.sukminkang.bookfinder.data.DataRepository
 import com.sukminkang.bookfinder.data.model.SearchResponseModel
 import com.sukminkang.bookfinder.ui.base.BaseViewModel
+import com.sukminkang.bookfinder.ui.base.SingleLiveEvent
 
 class SearchViewModel : BaseViewModel() {
 
@@ -12,10 +13,12 @@ class SearchViewModel : BaseViewModel() {
     private var currentKeyword = ""
     private val _searchInitResult = MutableLiveData<SearchResponseModel>()
     private val _searchNextResult = MutableLiveData<SearchResponseModel>()
+    private val _clickDeleteBtn = SingleLiveEvent<Unit>()
 
     //변수명 바꾸는것도 생각해봐야할듯!
     val searchInitResult : LiveData<SearchResponseModel> get() = _searchInitResult
     val searchNextResult : LiveData<SearchResponseModel> get() = _searchNextResult
+    val clickDeleteBtn : LiveData<Unit> get() = _clickDeleteBtn
 
     fun checkKeyword(keyword: String) {
         getBookListInit(keyword)
@@ -56,4 +59,8 @@ class SearchViewModel : BaseViewModel() {
         )
     }
 
+    fun onDeleteBtnClick() {
+        currentKeyword = ""
+        _clickDeleteBtn.call()
+    }
 }

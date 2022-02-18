@@ -1,5 +1,6 @@
 package com.sukminkang.bookfinder.ui.component.search
 
+import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sukminkang.bookfinder.R
 import com.sukminkang.bookfinder.databinding.ActivitySearchBinding
 import com.sukminkang.bookfinder.ui.base.BaseActivity
+import com.sukminkang.bookfinder.ui.base.hideKeyboard
 import com.sukminkang.bookfinder.ui.base.loadFromUrlString
 
 class SearchActivity : BaseActivity() {
@@ -15,6 +17,11 @@ class SearchActivity : BaseActivity() {
     private lateinit var binding : ActivitySearchBinding
     private lateinit var mainAdapter: SearchListAdapter
     private val viewModel: SearchViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding.vm = viewModel
+    }
 
     override fun observeViewModel() {
         with (viewModel) {
@@ -24,6 +31,11 @@ class SearchActivity : BaseActivity() {
             })
             searchNextResult.observe(this@SearchActivity, {
                 mainAdapter.addList(it.books)
+            })
+            clickDeleteBtn.observe(this@SearchActivity, {
+                binding.searchEditText.setText("")
+                binding.searchEditText.hideKeyboard()
+                binding.searchEditText.clearFocus()
             })
         }
     }
@@ -49,6 +61,5 @@ class SearchActivity : BaseActivity() {
                 viewModel.getNextBookList()
             }
         }
-
     }
 }
