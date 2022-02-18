@@ -10,4 +10,5 @@
 
     <color name="grey">#CEC3C3</color>
     <color name="grey_bg">#F8F8FA</color>
+    <color name="link_accent">#1b73e8</color>
 </resources>

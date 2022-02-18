@@ -1,5 +1,7 @@
 package com.sukminkang.bookfinder.ui.component.bookdetail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -21,6 +23,10 @@ class BookDetailActivity : BaseActivity(){
             bookDetail.observe(this@BookDetailActivity, {
                 binding.mainSv.visibility = View.VISIBLE
                 binding.bookDetail = it
+            })
+            goToStore.observe(this@BookDetailActivity, {
+                val storeIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                startActivity(storeIntent)
             })
         }
     }

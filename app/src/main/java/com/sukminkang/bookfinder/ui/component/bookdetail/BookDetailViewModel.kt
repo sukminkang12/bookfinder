@@ -9,7 +9,10 @@ import com.sukminkang.bookfinder.ui.base.BaseViewModel
 class BookDetailViewModel : BaseViewModel() {
 
     private val _bookDetail = MutableLiveData<BookDetailResponseModel>()
+    private val _goToStore = MutableLiveData<String>()
+
     val bookDetail : LiveData<BookDetailResponseModel> get() = _bookDetail
+    val goToStore : LiveData<String> get() = _goToStore
 
     fun getBookDetail(isbn:String) {
         addDisposableBag(
@@ -25,5 +28,9 @@ class BookDetailViewModel : BaseViewModel() {
                     }
                 )
         )
+    }
+
+    fun onLinkTextClicked(url:String) {
+        _goToStore.postValue(url)
     }
 }
