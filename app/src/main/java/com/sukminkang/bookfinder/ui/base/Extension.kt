@@ -4,11 +4,15 @@ import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 
 fun ImageView.loadFromUrlString(url: String) {
     if (url.isNotBlank()) {
-        Picasso.get().load(url).into(this)
+        Glide.with(this.context)
+            .load(url)
+            .thumbnail(0.1f)
+            .into(this)
     }
 }
 
