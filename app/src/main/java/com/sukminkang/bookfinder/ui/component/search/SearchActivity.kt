@@ -1,6 +1,8 @@
 package com.sukminkang.bookfinder.ui.component.search
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -11,6 +13,7 @@ import com.sukminkang.bookfinder.databinding.ActivitySearchBinding
 import com.sukminkang.bookfinder.ui.base.BaseActivity
 import com.sukminkang.bookfinder.ui.base.hideKeyboard
 import com.sukminkang.bookfinder.ui.base.loadFromUrlString
+import com.sukminkang.bookfinder.ui.component.bookdetail.BookDetailActivity
 
 class SearchActivity : BaseActivity() {
 
@@ -27,7 +30,7 @@ class SearchActivity : BaseActivity() {
     override fun observeViewModel() {
         with (viewModel) {
             searchInitResult.observe(this@SearchActivity , {
-                binding.totalText.text = "${baseContext.getString(R.string.search_screen_total)} : ${it.total}"
+                binding.data = it
                 mainAdapter.initList(it.books)
             })
             searchNextResult.observe(this@SearchActivity, {
@@ -61,6 +64,9 @@ class SearchActivity : BaseActivity() {
             requestNextPageCallback = {
                 viewModel.getNextBookList()
             }
+            onItemClickCallback = {
+                goBookDetail(it)
+            }
         }
     }
 
@@ -71,5 +77,11 @@ class SearchActivity : BaseActivity() {
             showToast(baseContext.getString(R.string.app_back_press_notice))
             backPressedAt = System.currentTimeMillis()
         }
+    }
+
+    private fun goBookDetail(isbn:String) {
+        val bookDetailIntent = Intent(this, BookDetailActivity::class.java)
+        bookDetailIntent.putExtra("isbn",isbn)
+        startActivity(bookDetailIntent)
     }
 }

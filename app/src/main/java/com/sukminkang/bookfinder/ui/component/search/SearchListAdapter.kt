@@ -16,6 +16,7 @@ class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.ItemViewHolder>
     private val bookList : ArrayList<SearchBooksModel> = arrayListOf()
     private var isRequestNextPage = false
     var requestNextPageCallback: (() -> Unit)? = null
+    var onItemClickCallback: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(CellSearchBookBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -62,6 +63,11 @@ class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.ItemViewHolder>
 
         fun bind(recyclerViewItem: SearchBooksModel) = with(binding) {
             bookItem = recyclerViewItem
+            bookItem?.isbn13?.let { isbn->
+                mainCl.setOnClickListener {
+                    onItemClickCallback?.invoke(isbn)
+                }
+            }
         }
 
     }
