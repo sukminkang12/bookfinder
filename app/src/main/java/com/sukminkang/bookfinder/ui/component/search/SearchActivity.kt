@@ -17,6 +17,7 @@ class SearchActivity : BaseActivity() {
     private lateinit var binding : ActivitySearchBinding
     private lateinit var mainAdapter: SearchListAdapter
     private val viewModel: SearchViewModel by viewModels()
+    private var backPressedAt = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +61,15 @@ class SearchActivity : BaseActivity() {
             requestNextPageCallback = {
                 viewModel.getNextBookList()
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (backPressedAt + 2000L > System.currentTimeMillis()) {
+            super.onBackPressed()
+        } else {
+            showToast(baseContext.getString(R.string.app_back_press_notice))
+            backPressedAt = System.currentTimeMillis()
         }
     }
 }

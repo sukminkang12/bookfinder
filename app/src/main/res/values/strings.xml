@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Book Finder</string>
 
+    <string name="app_back_press_notice">Press Back again to Exit</string>
+
     <string name="search_screen_title">Search</string>
     <string name="search_screen_total">Total</string>
     <string name="search_screen_isbn">ISBN:%s</string>
