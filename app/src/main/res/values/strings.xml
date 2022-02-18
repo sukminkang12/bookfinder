@@ -2,6 +2,7 @@
     <string name="app_name">Book Finder</string>
 
     <string name="search_screen_title">Search</string>
-    <string name="search_screen_total">total</string>
+    <string name="search_screen_total">Total</string>
     <string name="search_screen_isbn">ISBN:%s</string>
+    <string name="search_screen_hint">Find book what you want!</string>
 </resources>
