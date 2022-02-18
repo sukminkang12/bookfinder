@@ -18,4 +18,8 @@ object ApiService {
         retrofitService.create(SearchApiInterface::class.java)
     }
 
+    val booksApi: BooksApiInterface by lazy {
+        retrofitService.create(BooksApiInterface::class.java)
+    }
+
 }

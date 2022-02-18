@@ -4,7 +4,11 @@
     <string name="app_back_press_notice">Press Back again to Exit</string>
 
     <string name="search_screen_title">Search</string>
-    <string name="search_screen_total">Total</string>
-    <string name="search_screen_isbn">ISBN:%s</string>
+    <string name="search_screen_total">Total : %d</string>
+    <string name="search_screen_isbn">ISBN13 : %s</string>
     <string name="search_screen_hint">Find book what you want!</string>
+
+    <string name="book_detail_screen_title">Book Detail</string>
+    <string name="book_detail_screen_info">Title : %s\nSubtitle : %s\nAuthors : %s\npublisher : %s\nISBN10 : %s\nISBN13 : %s\npages : %s\nyear : %s\nrating : %s\nprice : %s\ndesc : %s</string>
+
 </resources>

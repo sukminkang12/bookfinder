@@ -5,8 +5,10 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
 @BindingAdapter("loadImage")
-fun loadImage(imageView: ImageView, url:String) {
-    imageView.loadFromUrlString(url)
+fun loadImage(imageView: ImageView, url:String?) {
+    url?.let {
+        imageView.loadFromUrlString(it)
+    }
 }
 
 @BindingAdapter(value = ["title","subtitle"], requireAll = true)

@@ -23,6 +23,9 @@
         <activity android:name=".ui.component.search.SearchActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".ui.component.bookdetail.BookDetailActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
