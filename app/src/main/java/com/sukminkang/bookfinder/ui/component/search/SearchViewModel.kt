@@ -3,10 +3,13 @@ package com.sukminkang.bookfinder.ui.component.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sukminkang.bookfinder.data.DataRepository
+import com.sukminkang.bookfinder.data.model.SearchBooksModel
 import com.sukminkang.bookfinder.data.model.SearchResponseModel
 import com.sukminkang.bookfinder.ui.base.BaseViewModel
 import com.sukminkang.bookfinder.ui.base.SingleLiveEvent
-import java.lang.Exception
+import io.reactivex.Observable
+import java.util.*
+import kotlin.math.max
 
 class SearchViewModel : BaseViewModel() {
 
@@ -14,22 +17,26 @@ class SearchViewModel : BaseViewModel() {
         NUMBER_EXCEED,
         NOT_CONTAIN_OPERATOR,
         SINGLE_KEYWORD,
-        CONTAIN_OR_OPERATOR,
-        CONTAIN_NOT_OPERATOR,
+        OR_OPERATOR,
+        NOT_OPERATOR,
         TOO_MANY_OPERATOR
     }
 
     private var currentPage = 1
     private var currentKeyword = ""
     private var exceptKeyword = ""
-    private val _searchInitResult = MutableLiveData<SearchResponseModel>()
-    private val _searchNextResult = MutableLiveData<SearchResponseModel>()
+    private var currentFirstKeyword = ""
+    private var currentSecondKeyword = ""
+    private var firstKeywordMaximumPage = Int.MAX_VALUE
+    private var secondKeywordMinimumPage = Int.MAX_VALUE
+    private val _searchInitResult = MutableLiveData<ArrayList<SearchBooksModel>>()
+    private val _searchNextResult = MutableLiveData<ArrayList<SearchBooksModel>>()
     private val _clickDeleteBtn = SingleLiveEvent<Unit>()
     private val _keywordType = MutableLiveData<KeywordStatus>()
 
     //변수명 바꾸는것도 생각해봐야할듯!
-    val searchInitResult : LiveData<SearchResponseModel> get() = _searchInitResult
-    val searchNextResult : LiveData<SearchResponseModel> get() = _searchNextResult
+    val searchInitResult : LiveData<ArrayList<SearchBooksModel>> get() = _searchInitResult
+    val searchNextResult : LiveData<ArrayList<SearchBooksModel>> get() = _searchNextResult
     val clickDeleteBtn : LiveData<Unit> get() = _clickDeleteBtn
     val keywordType : LiveData<KeywordStatus> get() = _keywordType
 
@@ -54,7 +61,7 @@ class SearchViewModel : BaseViewModel() {
         } else if (orCount == 0) {
             when (notCount) {
                 1 -> {
-                    _keywordType.postValue(KeywordStatus.CONTAIN_NOT_OPERATOR)
+                    _keywordType.postValue(KeywordStatus.NOT_OPERATOR)
                     val keywordList = keyword.split("-")
                     getBookListInit(keywordList[0],keywordList[1])
                 }
@@ -65,7 +72,9 @@ class SearchViewModel : BaseViewModel() {
         } else if (notCount == 0) {
             when (orCount) {
                 1 -> {
-                    _keywordType.postValue(KeywordStatus.CONTAIN_OR_OPERATOR)
+                    _keywordType.postValue(KeywordStatus.OR_OPERATOR)
+                    val keywordList = keyword.split("|")
+                    getBookListZipInit(keywordList[0], keywordList[1])
                 } else -> {
                     _keywordType.postValue(KeywordStatus.TOO_MANY_OPERATOR)
                 }
@@ -76,6 +85,8 @@ class SearchViewModel : BaseViewModel() {
     }
 
     private fun getBookList() {
+        if (currentPage > 100) return
+
         addDisposableBag(
             DataRepository.getBookList(currentKeyword, currentPage)
                 .subscribe(
@@ -87,9 +98,9 @@ class SearchViewModel : BaseViewModel() {
                                 }
                             }
                             if (currentPage == 1) {
-                                _searchInitResult.postValue(resp)
+                                _searchInitResult.postValue(resp.books)
                             } else {
-                                _searchNextResult.postValue(resp)
+                                _searchNextResult.postValue(resp.books)
                             }
                         }
                     },
@@ -102,14 +113,63 @@ class SearchViewModel : BaseViewModel() {
 
     private fun getBookListInit(keyword:String, except:String = "") {
         currentPage = 1
-        currentKeyword = keyword.lowercase()
-        exceptKeyword = except.lowercase()
+        currentKeyword = keyword.lowercase().replace(" ","")
+        exceptKeyword = except.lowercase().replace(" ","")
         getBookList()
+    }
+
+    private fun getBookListZipInit(keyword1:String, keyword2:String) {
+        currentPage = 1
+        currentFirstKeyword = keyword1
+        currentSecondKeyword = keyword2
+        getBookListZip()
+    }
+
+    private fun getBookListZip() {
+        if (currentPage > 100) return
+
+        if (currentPage <= firstKeywordMaximumPage && currentPage <= secondKeywordMinimumPage) {
+            addDisposableBag(Observable.zip(
+                DataRepository.getBookList(currentFirstKeyword, currentPage),
+                DataRepository.getBookList(currentSecondKeyword, currentPage),
+                {   resp1, resp2->
+                        Pair(resp1, resp2)
+                })
+                .subscribe({ pair ->
+                    if (pair.first.error == 0 && pair.second.error == 0) {
+                        val searchList = (pair.first.books + pair.second.books).distinctBy { it.isbn13 }
+                        if (currentPage == 1) {
+                            firstKeywordMaximumPage = max(0, pair.first.total - 1) / 10 + 1
+                            secondKeywordMinimumPage = max(0, pair.second.total - 1) / 10 + 1
+                            _searchInitResult.postValue(ArrayList(searchList))
+                        } else {
+                            _searchNextResult.postValue(ArrayList(searchList))
+                        }
+                    }
+                }
+                ,{
+
+                    })
+            )
+        } else if (currentPage <= firstKeywordMaximumPage) {
+            currentKeyword = currentFirstKeyword
+            getBookList()
+        } else if (currentPage <= secondKeywordMinimumPage) {
+            currentKeyword = currentSecondKeyword
+            getBookList()
+        }
     }
 
     fun getNextBookList() {
         currentPage++
-        getBookList()
+        when (keywordType.value) {
+            KeywordStatus.OR_OPERATOR -> {
+                getBookListZip()
+            }
+            KeywordStatus.NOT_CONTAIN_OPERATOR, KeywordStatus.SINGLE_KEYWORD -> {
+                getBookList()
+            }
+        }
     }
 
     fun onDeleteBtnClick() {

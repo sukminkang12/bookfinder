@@ -30,11 +30,10 @@ class SearchActivity : BaseActivity() {
     override fun observeViewModel() {
         with (viewModel) {
             searchInitResult.observe(this@SearchActivity , {
-                binding.data = it
-                mainAdapter.initList(it.books)
+                mainAdapter.initList(it)
             })
             searchNextResult.observe(this@SearchActivity, {
-                mainAdapter.addList(it.books)
+                mainAdapter.addList(it)
             })
             clickDeleteBtn.observe(this@SearchActivity, {
                 binding.searchEditText.setText("")

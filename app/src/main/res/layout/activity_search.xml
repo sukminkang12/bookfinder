@@ -6,9 +6,6 @@
 
     <data>
         <variable
-            name="data"
-            type="com.sukminkang.bookfinder.data.model.SearchResponseModel" />
-        <variable
             name="vm"
             type="com.sukminkang.bookfinder.ui.component.search.SearchViewModel" />
     </data>
@@ -90,27 +87,13 @@
             </Button>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            tools:text="total:12"
-            android:id="@+id/total_text"
-            android:text="@{@string/search_screen_total(data.total)}"
-            android:textSize="14dp"
-            android:textColor="@color/black"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="9dp"
-            app:layout_constraintTop_toBottomOf="@id/search_cl"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/total_text">
+            app:layout_constraintTop_toBottomOf="@id/search_cl">
 
         </androidx.recyclerview.widget.RecyclerView>
 
