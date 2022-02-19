@@ -5,12 +5,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.sukminkang.bookfinder.R
 
 fun ImageView.loadFromUrlString(url: String) {
     if (url.isNotBlank()) {
         Glide.with(this.context)
             .load(url)
-            .thumbnail(0.1f)
+            .placeholder(this.context.getDrawable(R.drawable.ic_default_image))
             .into(this)
     }
 }
