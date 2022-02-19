@@ -40,6 +40,9 @@ class SearchActivity : BaseActivity() {
                 binding.searchEditText.hideKeyboard()
                 binding.searchEditText.clearFocus()
             })
+            progressBarStatus.observe(this@SearchActivity, {
+                binding.progress.visibility = it
+            })
         }
     }
 

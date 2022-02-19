@@ -1,5 +1,6 @@
 package com.sukminkang.bookfinder.ui.component.search
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sukminkang.bookfinder.data.DataRepository
@@ -33,12 +34,14 @@ class SearchViewModel : BaseViewModel() {
     private val _searchNextResult = MutableLiveData<ArrayList<SearchBooksModel>>()
     private val _clickDeleteBtn = SingleLiveEvent<Unit>()
     private val _keywordType = MutableLiveData<KeywordStatus>()
+    private val _progressBarStatus = MutableLiveData(View.GONE)
 
     //변수명 바꾸는것도 생각해봐야할듯!
     val searchInitResult : LiveData<ArrayList<SearchBooksModel>> get() = _searchInitResult
     val searchNextResult : LiveData<ArrayList<SearchBooksModel>> get() = _searchNextResult
     val clickDeleteBtn : LiveData<Unit> get() = _clickDeleteBtn
     val keywordType : LiveData<KeywordStatus> get() = _keywordType
+    val progressBarStatus : LiveData<Int> get() = _progressBarStatus
 
     fun checkKeyword(keyword: String) {
         var orCount = keyword.count { it == '|' }
@@ -89,6 +92,9 @@ class SearchViewModel : BaseViewModel() {
 
         addDisposableBag(
             DataRepository.getBookList(currentKeyword, currentPage)
+                .doOnTerminate {
+                    _progressBarStatus.postValue(View.GONE)
+                }
                 .subscribe(
                     { resp ->
                         if (resp.error == 0) {
@@ -111,15 +117,20 @@ class SearchViewModel : BaseViewModel() {
         )
     }
 
-    private fun getBookListInit(keyword:String, except:String = "") {
+    private fun setInit() {
+        _progressBarStatus.postValue(View.VISIBLE)
         currentPage = 1
+    }
+
+    private fun getBookListInit(keyword:String, except:String = "") {
+        setInit()
         currentKeyword = keyword.lowercase().replace(" ","")
         exceptKeyword = except.lowercase().replace(" ","")
         getBookList()
     }
 
     private fun getBookListZipInit(keyword1:String, keyword2:String) {
-        currentPage = 1
+        setInit()
         currentFirstKeyword = keyword1
         currentSecondKeyword = keyword2
         getBookListZip()
@@ -135,6 +146,9 @@ class SearchViewModel : BaseViewModel() {
                 {   resp1, resp2->
                         Pair(resp1, resp2)
                 })
+                .doOnTerminate {
+                    _progressBarStatus.postValue(View.GONE)
+                }
                 .subscribe({ pair ->
                     if (pair.first.error == 0 && pair.second.error == 0) {
                         val searchList = (pair.first.books + pair.second.books).distinctBy { it.isbn13 }
