@@ -43,6 +43,19 @@ class SearchActivity : BaseActivity() {
             progressBarStatus.observe(this@SearchActivity, {
                 binding.progress.visibility = it
             })
+            keywordType.observe(this@SearchActivity, {
+                when (it) {
+                    SearchViewModel.KeywordStatus.TOO_MANY_OPERATOR -> {
+                        showToast(baseContext.getString(R.string.search_screen_too_many_operator))
+                    }
+                    SearchViewModel.KeywordStatus.NUMBER_EXCEED -> {
+                        showToast(baseContext.getString(R.string.search_screen_too_many_keyword))
+                    }
+                    SearchViewModel.KeywordStatus.NOT_CONTAIN_OPERATOR -> {
+                        showToast(baseContext.getString(R.string.search_screen_must_operator))
+                    }
+                }
+            })
         }
     }
 

@@ -7,9 +7,13 @@
     <string name="search_screen_total">Total : %d</string>
     <string name="search_screen_isbn">ISBN13 : %s</string>
     <string name="search_screen_hint">Find book what you want!</string>
+    <string name="search_screen_too_many_keyword">Too many keyword!</string>
+    <string name="search_screen_must_operator">Must include operator</string>
+    <string name="search_screen_too_many_operator">Too many operator</string>
 
     <string name="book_detail_screen_title">Book Detail</string>
     <string name="book_detail_screen_info">Title : %s\nSubtitle : %s\nAuthors : %s\npublisher : %s\nISBN10 : %s\nISBN13 : %s\npages : %s\nyear : %s\nrating : %s\nprice : %s\ndesc : %s</string>
     <string name="book_detail_go_web">Link To Store</string>
+
 
 </resources>

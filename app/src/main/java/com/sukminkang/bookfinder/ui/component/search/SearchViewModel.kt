@@ -180,7 +180,7 @@ class SearchViewModel : BaseViewModel() {
             KeywordStatus.OR_OPERATOR -> {
                 getBookListZip()
             }
-            KeywordStatus.NOT_CONTAIN_OPERATOR, KeywordStatus.SINGLE_KEYWORD -> {
+            KeywordStatus.NOT_OPERATOR, KeywordStatus.SINGLE_KEYWORD -> {
                 getBookList()
             }
         }
