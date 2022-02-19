@@ -3,7 +3,9 @@ package com.sukminkang.bookfinder.ui.component.search
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.databinding.BindingAdapter
@@ -30,7 +32,14 @@ class SearchActivity : BaseActivity() {
     override fun observeViewModel() {
         with (viewModel) {
             searchInitResult.observe(this@SearchActivity , {
-                mainAdapter.initList(it)
+                if (it.isEmpty()) {
+                    binding.notFoundCl.visibility = View.VISIBLE
+                    binding.searchList.visibility = View.GONE
+                } else {
+                    binding.notFoundCl.visibility = View.GONE
+                    binding.searchList.visibility = View.VISIBLE
+                    mainAdapter.initList(it)
+                }
             })
             searchNextResult.observe(this@SearchActivity, {
                 mainAdapter.addList(it)
@@ -67,9 +76,10 @@ class SearchActivity : BaseActivity() {
         binding.searchList.layoutManager = LinearLayoutManager(baseContext)
         binding.searchList.adapter = mainAdapter
 
-        binding.searchEditText.setOnEditorActionListener { v, actionId, keyEvent ->
+        binding.searchEditText.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 viewModel.checkKeyword(v.editableText.toString())
+                binding.searchEditText.hideKeyboard()
                 true
             }
             false

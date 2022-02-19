@@ -10,6 +10,7 @@
     <string name="search_screen_too_many_keyword">Too many keyword!</string>
     <string name="search_screen_must_operator">Must include operator</string>
     <string name="search_screen_too_many_operator">Too many operator</string>
+    <string name="search_screen_not_found">Sorry! \n No results were found for your search..</string>
 
     <string name="book_detail_screen_title">Book Detail</string>
     <string name="book_detail_screen_info">Title : %s\nSubtitle : %s\nAuthors : %s\npublisher : %s\nISBN10 : %s\nISBN13 : %s\npages : %s\nyear : %s\nrating : %s\nprice : %s\ndesc : %s</string>
