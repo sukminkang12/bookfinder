@@ -28,7 +28,7 @@ class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.ItemViewHolder>
             bind(itemData)
         }
 
-        if (position == bookList.size - 1 && !isRequestNextPage) {
+        if (position >= bookList.size - 2 && !isRequestNextPage) {
             isRequestNextPage = true
             requestNextPageCallback?.invoke()
         }
