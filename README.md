@@ -16,6 +16,11 @@ And look result.
 If there were book what you are lookging for, just click it.
 Then, you can see all information of book.
 
+* NOT operator : if you search 'java-kotlin', search results are for 'java' excluding 'kotlin'.
+* OR operator : if you search 'java|kotlin', search result is a sum of the results of 'java' and 'kotlin'.
+
+Operator supports only 2 keywords.
+
 # Data Source
 [IT Book store API](https://api.itbook.store/)
 
