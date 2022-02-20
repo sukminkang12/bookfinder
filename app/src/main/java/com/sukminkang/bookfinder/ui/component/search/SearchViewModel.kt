@@ -26,7 +26,6 @@ class SearchViewModel : BaseViewModel() {
     private val _clickDeleteBtn = SingleLiveEvent<Unit>()
     private val _progressBarStatus = MutableLiveData(View.GONE)
 
-    //변수명 바꾸는것도 생각해봐야할듯!
     val searchInitResult : LiveData<ArrayList<SearchBooksModel>> get() = _searchInitResult
     val searchNextResult : LiveData<ArrayList<SearchBooksModel>> get() = _searchNextResult
     val clickDeleteBtn : LiveData<Unit> get() = _clickDeleteBtn
@@ -40,7 +39,7 @@ class SearchViewModel : BaseViewModel() {
 
         val orCount = keyword.count { it == '|' }
         val notCount = keyword.count { it == '-'}
-        var keywordList = keyword.split("[-,|,' ']".toRegex()).filter { it.isNotBlank() }
+        val keywordList = keyword.split("[-,|,' ']".toRegex()).filter { it.isNotBlank() }
 
         if (keywordList.size > 2) {
             status.postValue(BookFinderStatus.NUMBER_EXCEED)
@@ -75,9 +74,27 @@ class SearchViewModel : BaseViewModel() {
         }
     }
 
-    private fun getBookList() {
-        if (currentPage > 100) return
 
+    private fun setInit() {
+        _progressBarStatus.postValue(View.VISIBLE)
+        currentPage = 1
+    }
+
+    private fun getBookListInit(keyword:String, except:String = "") {
+        setInit()
+        currentKeyword = keyword.lowercase().replace(" ","")
+        exceptKeyword = except.lowercase().replace(" ","")
+        getBookList()
+    }
+
+    private fun getBookListZipInit(keyword1:String, keyword2:String) {
+        setInit()
+        currentFirstKeyword = keyword1.lowercase().replace(" ", "")
+        currentSecondKeyword = keyword2.lowercase().replace(" ","")
+        getBookListZip()
+    }
+
+    private fun getBookList() {
         addDisposableBag(
             DataRepository.getBookList(currentKeyword, currentPage)
                 .doOnTerminate {
@@ -107,28 +124,7 @@ class SearchViewModel : BaseViewModel() {
         )
     }
 
-    private fun setInit() {
-        _progressBarStatus.postValue(View.VISIBLE)
-        currentPage = 1
-    }
-
-    private fun getBookListInit(keyword:String, except:String = "") {
-        setInit()
-        currentKeyword = keyword.lowercase().replace(" ","")
-        exceptKeyword = except.lowercase().replace(" ","")
-        getBookList()
-    }
-
-    private fun getBookListZipInit(keyword1:String, keyword2:String) {
-        setInit()
-        currentFirstKeyword = keyword1.lowercase().replace(" ", "")
-        currentSecondKeyword = keyword2.lowercase().replace(" ","")
-        getBookListZip()
-    }
-
     private fun getBookListZip() {
-        if (currentPage > 100) return
-
         if (currentPage <= firstKeywordMaximumPage && currentPage <= secondKeywordMinimumPage) {
             addDisposableBag(Observable.zip(
                 DataRepository.getBookList(currentFirstKeyword, currentPage),
@@ -168,6 +164,8 @@ class SearchViewModel : BaseViewModel() {
 
     fun getNextBookList() {
         currentPage++
+        if (currentPage > 100) return
+
         when (status.value) {
             BookFinderStatus.OR_OPERATOR -> {
                 getBookListZip()
