@@ -5,6 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import com.sukminkang.bookfinder.BookFinderStatus
+import com.sukminkang.bookfinder.R
 import com.sukminkang.bookfinder.databinding.ActivityBookDetailBinding
 import com.sukminkang.bookfinder.ui.base.BaseActivity
 
@@ -27,6 +29,16 @@ class DetailBookActivity : BaseActivity(){
             goToStore.observe(this@DetailBookActivity, {
                 val storeIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
                 startActivity(storeIntent)
+            })
+            status.observe(this@DetailBookActivity, {
+                when (it) {
+                    BookFinderStatus.NETWORK_ERROR -> {
+                        showToast(baseContext.getString(R.string.common_network_error))
+                    }
+                    BookFinderStatus.DEFAULT_ERROR -> {
+                        showToast(baseContext.getString(R.string.common_default_error))
+                    }
+                }
             })
         }
     }

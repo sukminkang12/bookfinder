@@ -13,7 +13,7 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
         private const val TAG = "SingleLiveEvent"
     }
 
-    val _pending: AtomicBoolean = AtomicBoolean(false)
+    private val _pending: AtomicBoolean = AtomicBoolean(false)
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
         if (hasActiveObservers()) {

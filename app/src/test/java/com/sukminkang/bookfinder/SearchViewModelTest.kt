@@ -3,7 +3,6 @@ package com.sukminkang.bookfinder
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.sukminkang.bookfinder.data.model.SearchBooksModel
 import com.sukminkang.bookfinder.ui.component.search.SearchViewModel
-import com.sukminkang.bookfinder.ui.component.search.SearchViewModel.KeywordStatus.*
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
@@ -35,57 +34,57 @@ class SearchViewModelTest {
     @Test
     fun testCheckKeyword1() {
         searchViewModel.checkKeyword("java kotlin")
-        val result = searchViewModel.keywordType.value
-        assertEquals(result, NOT_CONTAIN_OPERATOR)
+        val result = searchViewModel.status.value
+        assertEquals(result, BookFinderStatus.NOT_CONTAIN_OPERATOR)
     }
 
     @Test
     fun testCheckKeyword2() {
         searchViewModel.checkKeyword("java kotlin sql")
-        val result = searchViewModel.keywordType.value
-        assertEquals(result, NUMBER_EXCEED)
+        val result = searchViewModel.status.value
+        assertEquals(result, BookFinderStatus.NUMBER_EXCEED)
     }
 
     @Test
     fun testCheckKeyword3() {
         searchViewModel.checkKeyword("testtest!!jva")
-        val result = searchViewModel.keywordType.value
-        assertEquals(result, SINGLE_KEYWORD)
+        val result = searchViewModel.status.value
+        assertEquals(result, BookFinderStatus.SINGLE_KEYWORD)
     }
 
     @Test
     fun testCheckKeyword4() {
         searchViewModel.checkKeyword("java|kotlin")
-        val result = searchViewModel.keywordType.value
-        assertEquals(result, OR_OPERATOR)
+        val result = searchViewModel.status.value
+        assertEquals(result, BookFinderStatus.OR_OPERATOR)
     }
 
     @Test
     fun testCheckKeyword5() {
         searchViewModel.checkKeyword("java|||kotlin")
-        val result = searchViewModel.keywordType.value
-        assertEquals(result, TOO_MANY_OPERATOR)
+        val result = searchViewModel.status.value
+        assertEquals(result, BookFinderStatus.TOO_MANY_OPERATOR)
     }
 
     @Test
     fun testCheckKeyword6() {
         searchViewModel.checkKeyword("java | kotlin")
-        val result = searchViewModel.keywordType.value
-        assertEquals(result, OR_OPERATOR)
+        val result = searchViewModel.status.value
+        assertEquals(result, BookFinderStatus.OR_OPERATOR)
     }
 
     @Test
     fun testCheckKeyword7() {
         searchViewModel.checkKeyword("java^&")
-        val result = searchViewModel.keywordType.value
-        assertEquals(result, SINGLE_KEYWORD)
+        val result = searchViewModel.status.value
+        assertEquals(result, BookFinderStatus.SINGLE_KEYWORD)
     }
 
     @Test
     fun testCheckKeyword8() {
         searchViewModel.checkKeyword("java-")
-        val result = searchViewModel.keywordType.value
-        assertEquals(result, NOT_OPERATOR)
+        val result = searchViewModel.status.value
+        assertEquals(result, BookFinderStatus.NOT_OPERATOR)
         assertEquals(searchViewModel.searchInitResult.value!!.size, 10)
     }
 
@@ -131,8 +130,8 @@ class SearchViewModelTest {
     @Test
     fun testCheckKeyword13() {
         searchViewModel.checkKeyword("java|-kotlin")
-        val result = searchViewModel.keywordType.value!!
-        assertEquals(result, TOO_MANY_OPERATOR)
+        val result = searchViewModel.status.value!!
+        assertEquals(result, BookFinderStatus.TOO_MANY_OPERATOR)
     }
 
     @Test

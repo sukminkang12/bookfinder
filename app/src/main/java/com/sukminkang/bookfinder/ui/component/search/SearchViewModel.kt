@@ -3,6 +3,7 @@ package com.sukminkang.bookfinder.ui.component.search
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.sukminkang.bookfinder.BookFinderStatus
 import com.sukminkang.bookfinder.data.DataRepository
 import com.sukminkang.bookfinder.data.model.SearchBooksModel
 import com.sukminkang.bookfinder.ui.base.BaseViewModel
@@ -12,15 +13,6 @@ import java.util.*
 import kotlin.math.max
 
 class SearchViewModel : BaseViewModel() {
-
-    enum class KeywordStatus {
-        NUMBER_EXCEED,
-        NOT_CONTAIN_OPERATOR,
-        SINGLE_KEYWORD,
-        OR_OPERATOR,
-        NOT_OPERATOR,
-        TOO_MANY_OPERATOR
-    }
 
     private var currentPage = 1
     private var currentKeyword = ""
@@ -32,14 +24,12 @@ class SearchViewModel : BaseViewModel() {
     private val _searchInitResult = MutableLiveData<ArrayList<SearchBooksModel>>()
     private val _searchNextResult = MutableLiveData<ArrayList<SearchBooksModel>>()
     private val _clickDeleteBtn = SingleLiveEvent<Unit>()
-    private val _keywordType = MutableLiveData<KeywordStatus>()
     private val _progressBarStatus = MutableLiveData(View.GONE)
 
     //변수명 바꾸는것도 생각해봐야할듯!
     val searchInitResult : LiveData<ArrayList<SearchBooksModel>> get() = _searchInitResult
     val searchNextResult : LiveData<ArrayList<SearchBooksModel>> get() = _searchNextResult
     val clickDeleteBtn : LiveData<Unit> get() = _clickDeleteBtn
-    val keywordType : LiveData<KeywordStatus> get() = _keywordType
     val progressBarStatus : LiveData<Int> get() = _progressBarStatus
 
     fun checkKeyword(keyword: String) {
@@ -50,39 +40,39 @@ class SearchViewModel : BaseViewModel() {
             val keywordList = keyword.split(" ")
             when (keywordList.size) {
                 1 -> {
-                    _keywordType.postValue(KeywordStatus.SINGLE_KEYWORD)
+                    status.postValue(BookFinderStatus.SINGLE_KEYWORD)
                     getBookListInit(keywordList[0])
                 }
                 2 -> {
-                    _keywordType.postValue(KeywordStatus.NOT_CONTAIN_OPERATOR)
+                    status.postValue(BookFinderStatus.NOT_CONTAIN_OPERATOR)
                 }
                 else -> {
-                    _keywordType.postValue(KeywordStatus.NUMBER_EXCEED)
+                    status.postValue(BookFinderStatus.NUMBER_EXCEED)
                 }
             }
         } else if (orCount == 0) {
             when (notCount) {
                 1 -> {
-                    _keywordType.postValue(KeywordStatus.NOT_OPERATOR)
+                    status.postValue(BookFinderStatus.NOT_OPERATOR)
                     val keywordList = keyword.split("-")
                     getBookListInit(keywordList[0],keywordList[1])
                 }
                 else -> {
-                    _keywordType.postValue(KeywordStatus.TOO_MANY_OPERATOR)
+                    status.postValue(BookFinderStatus.TOO_MANY_OPERATOR)
                 }
             }
         } else if (notCount == 0) {
             when (orCount) {
                 1 -> {
-                    _keywordType.postValue(KeywordStatus.OR_OPERATOR)
+                    status.postValue(BookFinderStatus.OR_OPERATOR)
                     val keywordList = keyword.split("|")
                     getBookListZipInit(keywordList[0], keywordList[1])
                 } else -> {
-                    _keywordType.postValue(KeywordStatus.TOO_MANY_OPERATOR)
+                    status.postValue(BookFinderStatus.TOO_MANY_OPERATOR)
                 }
             }
         } else {
-            _keywordType.postValue(KeywordStatus.TOO_MANY_OPERATOR)
+            status.postValue(BookFinderStatus.TOO_MANY_OPERATOR)
         }
     }
 
@@ -107,10 +97,12 @@ class SearchViewModel : BaseViewModel() {
                             } else {
                                 _searchNextResult.postValue(resp.books)
                             }
+                        } else {
+                            status.postValue(BookFinderStatus.DEFAULT_ERROR)
                         }
                     },
                     {
-
+                        handleError(it)
                     }
                 )
         )
@@ -158,10 +150,12 @@ class SearchViewModel : BaseViewModel() {
                         } else {
                             _searchNextResult.postValue(ArrayList(searchList))
                         }
+                    } else {
+                        status.postValue(BookFinderStatus.DEFAULT_ERROR)
                     }
                 }
                 ,{
-
+                    handleError(it)
                     })
             )
         } else if (currentPage <= firstKeywordMaximumPage) {
@@ -175,11 +169,11 @@ class SearchViewModel : BaseViewModel() {
 
     fun getNextBookList() {
         currentPage++
-        when (keywordType.value) {
-            KeywordStatus.OR_OPERATOR -> {
+        when (status.value) {
+            BookFinderStatus.OR_OPERATOR -> {
                 getBookListZip()
             }
-            KeywordStatus.NOT_OPERATOR, KeywordStatus.SINGLE_KEYWORD -> {
+            BookFinderStatus.NOT_OPERATOR, BookFinderStatus.SINGLE_KEYWORD -> {
                 getBookList()
             }
         }

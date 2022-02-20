@@ -17,4 +17,7 @@
     <string name="detail_book_go_web">Link To Store</string>
 
     <string name="error_screen_text">Oops! \nSomething went wrong..!</string>
+
+    <string name="common_network_error">Network error! check your connection</string>
+    <string name="common_default_error">An error has occurred</string>
 </resources>

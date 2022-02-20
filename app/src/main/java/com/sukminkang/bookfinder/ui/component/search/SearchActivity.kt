@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sukminkang.bookfinder.BookFinderStatus
 import com.sukminkang.bookfinder.R
 import com.sukminkang.bookfinder.databinding.ActivitySearchBinding
 import com.sukminkang.bookfinder.ui.base.BaseActivity
@@ -47,16 +48,22 @@ class SearchActivity : BaseActivity() {
             progressBarStatus.observe(this@SearchActivity, {
                 binding.progress.visibility = it
             })
-            keywordType.observe(this@SearchActivity, {
+            status.observe(this@SearchActivity, {
                 when (it) {
-                    SearchViewModel.KeywordStatus.TOO_MANY_OPERATOR -> {
+                    BookFinderStatus.TOO_MANY_OPERATOR -> {
                         showToast(baseContext.getString(R.string.search_screen_too_many_operator))
                     }
-                    SearchViewModel.KeywordStatus.NUMBER_EXCEED -> {
+                    BookFinderStatus.NUMBER_EXCEED -> {
                         showToast(baseContext.getString(R.string.search_screen_too_many_keyword))
                     }
-                    SearchViewModel.KeywordStatus.NOT_CONTAIN_OPERATOR -> {
+                    BookFinderStatus.NOT_CONTAIN_OPERATOR -> {
                         showToast(baseContext.getString(R.string.search_screen_must_operator))
+                    }
+                    BookFinderStatus.NETWORK_ERROR -> {
+                        showToast(baseContext.getString(R.string.common_network_error))
+                    }
+                    BookFinderStatus.DEFAULT_ERROR -> {
+                        showToast(baseContext.getString(R.string.common_default_error))
                     }
                 }
             })
