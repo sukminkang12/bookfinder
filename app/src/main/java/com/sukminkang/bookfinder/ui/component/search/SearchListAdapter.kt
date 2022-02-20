@@ -12,7 +12,6 @@ import com.sukminkang.bookfinder.ui.base.loadFromUrlString
 
 class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.ItemViewHolder>() {
 
-    private lateinit var context: Context
     private val bookList : ArrayList<SearchBooksModel> = arrayListOf()
     private var isRequestNextPage = false
     var requestNextPageCallback: (() -> Unit)? = null
@@ -36,12 +35,6 @@ class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.ItemViewHolder>
 
     override fun getItemCount(): Int {
         return bookList.size
-    }
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        context = recyclerView.context
-
     }
 
     fun initList(list:ArrayList<SearchBooksModel>) {
