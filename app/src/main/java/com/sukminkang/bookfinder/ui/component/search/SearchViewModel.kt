@@ -154,12 +154,16 @@ class SearchViewModel : BaseViewModel() {
                     })
             )
         } else if (currentPage <= firstKeywordMaximumPage) {
-            currentKeyword = currentFirstKeyword
-            getBookList()
+            changeOrToSingle(currentFirstKeyword)
         } else if (currentPage <= secondKeywordMinimumPage) {
-            currentKeyword = currentSecondKeyword
-            getBookList()
+            changeOrToSingle(currentSecondKeyword)
         }
+    }
+
+    private fun changeOrToSingle(keyword: String) {
+        currentKeyword = keyword
+        status.postValue(BookFinderStatus.SINGLE_KEYWORD)
+        getBookList()
     }
 
     fun getNextBookList() {
