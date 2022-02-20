@@ -135,4 +135,17 @@ class SearchViewModelTest {
         assertEquals(result, TOO_MANY_OPERATOR)
     }
 
+    @Test
+    fun testCheckKeyword14() {
+        var keyWord = "android-kotlin"
+        searchViewModel.checkKeyword(keyWord)
+        val result = searchViewModel.searchInitResult.value!!
+        repeat(30) {
+            searchViewModel.getNextBookList()
+            result.addAll(searchViewModel.searchNextResult.value!!)
+        }
+        for (r in result) {
+            assert(!r.title.contains("kotlin"))
+        }
+    }
 }
