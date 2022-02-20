@@ -65,6 +65,12 @@ class SearchActivity : BaseActivity() {
                     BookFinderStatus.DEFAULT_ERROR -> {
                         showToast(baseContext.getString(R.string.common_default_error))
                     }
+                    BookFinderStatus.NOT_TWO_KEYWORD -> {
+                        showToast(baseContext.getString(R.string.search_screen_not_two_keyword))
+                    }
+                    BookFinderStatus.BLANK_KEYWORD -> {
+                        showToast(baseContext.getString(R.string.search_screen_blank))
+                    }
                 }
             })
         }

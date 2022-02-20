@@ -33,46 +33,45 @@ class SearchViewModel : BaseViewModel() {
     val progressBarStatus : LiveData<Int> get() = _progressBarStatus
 
     fun checkKeyword(keyword: String) {
+        if (keyword.isBlank()) {
+            status.postValue(BookFinderStatus.BLANK_KEYWORD)
+            return
+        }
+
         var orCount = keyword.count { it == '|' }
         var notCount = keyword.count { it == '-'}
+        var keywordList = keyword.split("[-,|,' ']".toRegex()).filter { it.isNotBlank() }
 
-        if (orCount == 0 && notCount == 0) {
-            val keywordList = keyword.split(" ")
-            when (keywordList.size) {
-                1 -> {
+        if (keywordList.size > 2) {
+            status.postValue(BookFinderStatus.NUMBER_EXCEED)
+            return
+        }
+
+        when (orCount + notCount) {
+            0 -> {
+                if (keywordList.size == 1) {
                     status.postValue(BookFinderStatus.SINGLE_KEYWORD)
                     getBookListInit(keywordList[0])
-                }
-                2 -> {
+                } else {
                     status.postValue(BookFinderStatus.NOT_CONTAIN_OPERATOR)
                 }
-                else -> {
-                    status.postValue(BookFinderStatus.NUMBER_EXCEED)
-                }
             }
-        } else if (orCount == 0) {
-            when (notCount) {
-                1 -> {
-                    status.postValue(BookFinderStatus.NOT_OPERATOR)
-                    val keywordList = keyword.split("-")
-                    getBookListInit(keywordList[0],keywordList[1])
+            1 -> {
+                if (keywordList.size == 1) {
+                    status.postValue(BookFinderStatus.NOT_TWO_KEYWORD)
+                    return
                 }
-                else -> {
-                    status.postValue(BookFinderStatus.TOO_MANY_OPERATOR)
-                }
-            }
-        } else if (notCount == 0) {
-            when (orCount) {
-                1 -> {
+                if (orCount == 1) {
                     status.postValue(BookFinderStatus.OR_OPERATOR)
-                    val keywordList = keyword.split("|")
                     getBookListZipInit(keywordList[0], keywordList[1])
-                } else -> {
-                    status.postValue(BookFinderStatus.TOO_MANY_OPERATOR)
+                } else {
+                    status.postValue(BookFinderStatus.NOT_OPERATOR)
+                    getBookListInit(keywordList[0], keywordList[1])
                 }
             }
-        } else {
-            status.postValue(BookFinderStatus.TOO_MANY_OPERATOR)
+            else -> {
+                status.postValue(BookFinderStatus.TOO_MANY_OPERATOR)
+            }
         }
     }
 
@@ -122,8 +121,8 @@ class SearchViewModel : BaseViewModel() {
 
     private fun getBookListZipInit(keyword1:String, keyword2:String) {
         setInit()
-        currentFirstKeyword = keyword1
-        currentSecondKeyword = keyword2
+        currentFirstKeyword = keyword1.lowercase().replace(" ", "")
+        currentSecondKeyword = keyword2.lowercase().replace(" ","")
         getBookListZip()
     }
 

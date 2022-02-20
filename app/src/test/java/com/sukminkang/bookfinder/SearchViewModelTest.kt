@@ -84,8 +84,7 @@ class SearchViewModelTest {
     fun testCheckKeyword8() {
         searchViewModel.checkKeyword("java-")
         val result = searchViewModel.status.value
-        assertEquals(result, BookFinderStatus.NOT_OPERATOR)
-        assertEquals(searchViewModel.searchInitResult.value!!.size, 10)
+        assertEquals(result, BookFinderStatus.NOT_TWO_KEYWORD)
     }
 
     @Test
@@ -146,5 +145,11 @@ class SearchViewModelTest {
         for (r in result) {
             assert(!r.title.contains("kotlin"))
         }
+    }
+
+    @Test
+    fun testCheckKeyword15() {
+        searchViewModel.checkKeyword("          ")
+        assertEquals(searchViewModel.status.value!!, BookFinderStatus.BLANK_KEYWORD)
     }
 }
