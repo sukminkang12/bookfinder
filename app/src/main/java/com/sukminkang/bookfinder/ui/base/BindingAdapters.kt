@@ -8,6 +8,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.sukminkang.bookfinder.App
+import com.sukminkang.bookfinder.R
+import com.sukminkang.bookfinder.data.model.DetailBookResponseModel
 import com.sukminkang.bookfinder.databinding.CellPdfItemBinding
 
 @BindingAdapter("loadImage")
@@ -26,6 +28,15 @@ fun setTitle(textView:TextView, title:String, subtitle:String) {
     }
 
     textView.text = "${title}${bookSubtitle}"
+}
+
+@BindingAdapter("info")
+fun setInfo(textView: TextView, data:DetailBookResponseModel?) {
+    data?.let {
+        textView.text = String.format(textView.context.getString(R.string.detail_book_screen_info),
+        data.title, data.subtitle, data.authors, data.publisher, data.isbn10, data.isbn13,
+        data.pages, data.year, data.rating, data.price, data.desc)
+    }
 }
 
 @BindingAdapter("addPdfList")
