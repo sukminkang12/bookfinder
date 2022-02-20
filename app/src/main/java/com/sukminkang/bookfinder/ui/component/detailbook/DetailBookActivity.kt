@@ -20,9 +20,9 @@ class DetailBookActivity : BaseActivity(){
 
     override fun observeViewModel() {
         with (bookViewModel) {
-            bookDetail.observe(this@DetailBookActivity, {
+            detailBook.observe(this@DetailBookActivity, {
                 binding.mainSv.visibility = View.VISIBLE
-                binding.bookDetail = it
+                binding.detailBook = it
             })
             goToStore.observe(this@DetailBookActivity, {
                 val storeIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))

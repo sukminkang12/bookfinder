@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sukminkang.bookfinder.data.DataRepository
 import com.sukminkang.bookfinder.data.model.SearchBooksModel
-import com.sukminkang.bookfinder.data.model.SearchResponseModel
 import com.sukminkang.bookfinder.ui.base.BaseViewModel
 import com.sukminkang.bookfinder.ui.base.SingleLiveEvent
 import io.reactivex.Observable

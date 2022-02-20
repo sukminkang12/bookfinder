@@ -1,6 +1,6 @@
 package com.sukminkang.bookfinder.data
 
-import com.sukminkang.bookfinder.data.model.BookDetailResponseModel
+import com.sukminkang.bookfinder.data.model.DetailBookResponseModel
 import com.sukminkang.bookfinder.data.model.SearchResponseModel
 import com.sukminkang.bookfinder.network.ApiService
 import io.reactivex.Observable
@@ -18,7 +18,7 @@ class DataRepository {
                 .observeOn(AndroidSchedulers.mainThread())
         }
 
-        fun getBookDetail(isbn: String) : Observable<BookDetailResponseModel> {
+        fun getBookDetail(isbn: String) : Observable<DetailBookResponseModel> {
 
             return Observable.just("")
                 .subscribeOn(Schedulers.io())

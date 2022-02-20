@@ -1,6 +1,6 @@
 package com.sukminkang.bookfinder.network
 
-import com.sukminkang.bookfinder.data.model.BookDetailResponseModel
+import com.sukminkang.bookfinder.data.model.DetailBookResponseModel
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -9,5 +9,5 @@ import retrofit2.http.Path
 interface BooksApiInterface {
 
     @GET("books/{isbn}")
-    fun getBookDetail(@Path("isbn") isbn:String) : Single<BookDetailResponseModel>
+    fun getBookDetail(@Path("isbn") isbn:String) : Single<DetailBookResponseModel>
 }
