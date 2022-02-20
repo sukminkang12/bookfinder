@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
-data class BookDetailResponseModel(
+data class DetailBookResponseModel(
     var error : Int,
     var title : String,
     var subtitle : String,
@@ -20,4 +20,5 @@ data class BookDetailResponseModel(
     var price : String,
     var image : String,
     var url : String,
+    var pdf: HashMap<String,String>
 ) : Parcelable
