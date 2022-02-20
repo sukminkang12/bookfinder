@@ -8,6 +8,7 @@ MVVM (Mode-View-ViewModel)
 `Okhttp`
 `Retrofit`
 `RxJava`
+`Glide`
 
 # How to use it?
 Enter keywords for the book you are looking for.
