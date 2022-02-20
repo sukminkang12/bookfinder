@@ -19,7 +19,7 @@ fun loadImage(imageView: ImageView, url:String?) {
 
 @BindingAdapter(value = ["title","subtitle"], requireAll = true)
 fun setTitle(textView:TextView, title:String, subtitle:String) {
-    var bookSubtitle = if (subtitle.isBlank()) {
+    val bookSubtitle = if (subtitle.isBlank()) {
         ""
     } else {
         "(${subtitle})"
@@ -29,11 +29,11 @@ fun setTitle(textView:TextView, title:String, subtitle:String) {
 }
 
 @BindingAdapter("addPdfList")
-fun addPdfList(linearLayout: LinearLayout, pdf:HashMap<String,String>? = hashMapOf()) {
+fun addPdfList(linearLayout: LinearLayout, pdf:HashMap<String,String>?) {
     App.currentActivity?.let { currentActivity ->
         pdf?.let {
             linearLayout.visibility = View.VISIBLE
-            it.iterator()?.forEach { item ->
+            it.iterator().forEach { item ->
                 val itemBinding = CellPdfItemBinding.inflate(currentActivity.layoutInflater)
                 itemBinding.chapter.text = item.key
                 itemBinding.root.setOnClickListener {

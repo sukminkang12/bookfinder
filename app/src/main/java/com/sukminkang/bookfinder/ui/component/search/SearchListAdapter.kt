@@ -1,14 +1,10 @@
 package com.sukminkang.bookfinder.ui.component.search
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sukminkang.bookfinder.data.model.SearchBooksModel
 import com.sukminkang.bookfinder.databinding.CellSearchBookBinding
-import com.sukminkang.bookfinder.ui.base.loadFromUrlString
 
 class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.ItemViewHolder>() {
 
@@ -46,7 +42,7 @@ class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.ItemViewHolder>
 
     fun addList(list:ArrayList<SearchBooksModel>) {
         isRequestNextPage = false
-        var start = bookList.lastIndex + 1
+        val start = bookList.lastIndex + 1
         bookList.addAll(list)
         notifyItemRangeInserted(start, bookList.lastIndex)
     }

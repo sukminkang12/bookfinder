@@ -38,8 +38,8 @@ class SearchViewModel : BaseViewModel() {
             return
         }
 
-        var orCount = keyword.count { it == '|' }
-        var notCount = keyword.count { it == '-'}
+        val orCount = keyword.count { it == '|' }
+        val notCount = keyword.count { it == '-'}
         var keywordList = keyword.split("[-,|,' ']".toRegex()).filter { it.isNotBlank() }
 
         if (keywordList.size > 2) {
