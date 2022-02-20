@@ -12,9 +12,9 @@
     <string name="search_screen_too_many_operator">Too many operator</string>
     <string name="search_screen_not_found">Sorry! \n No results were found for your search..</string>
 
-    <string name="book_detail_screen_title">Book Detail</string>
-    <string name="book_detail_screen_info">Title : %s\nSubtitle : %s\nAuthors : %s\npublisher : %s\nISBN10 : %s\nISBN13 : %s\npages : %s\nyear : %s\nrating : %s\nprice : %s\ndesc : %s</string>
-    <string name="book_detail_go_web">Link To Store</string>
+    <string name="detail_book_screen_title">Detail Book</string>
+    <string name="detail_book_screen_info">Title : %s\nSubtitle : %s\nAuthors : %s\npublisher : %s\nISBN10 : %s\nISBN13 : %s\npages : %s\nyear : %s\nrating : %s\nprice : %s\ndesc : %s</string>
+    <string name="detail_book_go_web">Link To Store</string>
 
     <string name="error_screen_text">Oops! \nSomething went wrong..!</string>
 </resources>

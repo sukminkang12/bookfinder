@@ -2,20 +2,15 @@ package com.sukminkang.bookfinder.ui.component.search
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
 import androidx.activity.viewModels
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sukminkang.bookfinder.R
 import com.sukminkang.bookfinder.databinding.ActivitySearchBinding
 import com.sukminkang.bookfinder.ui.base.BaseActivity
 import com.sukminkang.bookfinder.ui.base.hideKeyboard
-import com.sukminkang.bookfinder.ui.base.loadFromUrlString
-import com.sukminkang.bookfinder.ui.component.bookdetail.BookDetailActivity
+import com.sukminkang.bookfinder.ui.component.detailbook.DetailBookActivity
 
 class SearchActivity : BaseActivity() {
 
@@ -105,7 +100,7 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun goBookDetail(isbn:String) {
-        val bookDetailIntent = Intent(this, BookDetailActivity::class.java)
+        val bookDetailIntent = Intent(this, DetailBookActivity::class.java)
         bookDetailIntent.putExtra("isbn",isbn)
         startActivity(bookDetailIntent)
     }

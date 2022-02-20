@@ -1,4 +1,4 @@
-package com.sukminkang.bookfinder.ui.component.bookdetail
+package com.sukminkang.bookfinder.ui.component.detailbook
 
 import android.content.Intent
 import android.net.Uri
@@ -8,23 +8,23 @@ import androidx.activity.viewModels
 import com.sukminkang.bookfinder.databinding.ActivityBookDetailBinding
 import com.sukminkang.bookfinder.ui.base.BaseActivity
 
-class BookDetailActivity : BaseActivity(){
+class DetailBookActivity : BaseActivity(){
 
     private lateinit var binding : ActivityBookDetailBinding
-    private val viewModel: BookDetailViewModel by viewModels()
+    private val bookViewModel: DetailBookViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.vm = viewModel
+        binding.vm = bookViewModel
     }
 
     override fun observeViewModel() {
-        with (viewModel) {
-            bookDetail.observe(this@BookDetailActivity, {
+        with (bookViewModel) {
+            bookDetail.observe(this@DetailBookActivity, {
                 binding.mainSv.visibility = View.VISIBLE
                 binding.bookDetail = it
             })
-            goToStore.observe(this@BookDetailActivity, {
+            goToStore.observe(this@DetailBookActivity, {
                 val storeIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
                 startActivity(storeIntent)
             })
@@ -35,6 +35,6 @@ class BookDetailActivity : BaseActivity(){
         binding = ActivityBookDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val isbn = intent.getStringExtra("isbn")!!
-        viewModel.getBookDetail(isbn)
+        bookViewModel.getBookDetail(isbn)
     }
 }

@@ -25,7 +25,7 @@
         <activity android:name=".ui.component.search.SearchActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.component.bookdetail.BookDetailActivity"
+        <activity android:name=".ui.component.detailbook.DetailBookActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ui.component.error.ErrorActivity"

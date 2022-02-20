@@ -1,4 +1,4 @@
-package com.sukminkang.bookfinder.ui.component.bookdetail
+package com.sukminkang.bookfinder.ui.component.detailbook
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,7 @@ import com.sukminkang.bookfinder.data.DataRepository
 import com.sukminkang.bookfinder.data.model.BookDetailResponseModel
 import com.sukminkang.bookfinder.ui.base.BaseViewModel
 
-class BookDetailViewModel : BaseViewModel() {
+class DetailBookViewModel : BaseViewModel() {
 
     private val _bookDetail = MutableLiveData<BookDetailResponseModel>()
     private val _goToStore = MutableLiveData<String>()
