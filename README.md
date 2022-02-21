@@ -14,7 +14,7 @@ MVVM (Mode-View-ViewModel)
 Enter keywords for the book you are looking for.
 And look result. 
 
-If there were book what you are lookging for, just click it.
+If there were book what you are looking for, just click it.
 Then, you can see all information of book.
 
 * NOT operator : if you search 'java-kotlin', search results are for 'java' excluding 'kotlin'.
